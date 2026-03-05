@@ -595,3 +595,300 @@ body {
 .content-hidden {
     display: none !important;
 }
+
+/* ===================== */
+/* İLETİŞİM FAB BUTONU  */
+/* ===================== */
+.contact-fab {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 22px 0 18px;
+    height: 50px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border: none;
+    color: white;
+    font-family: var(--font-family);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 4px 24px rgba(139, 92, 246, 0.45);
+    letter-spacing: 0.02em;
+}
+
+/* ===================== */
+/* MODAL OVERLAY         */
+/* ===================== */
+.contact-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+/* ===================== */
+/* MODAL KUTUSU          */
+/* ===================== */
+.contact-modal {
+    background: rgba(15, 15, 20, 0.97);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 460px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(139, 92, 246, 0.1);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(139, 92, 246, 0.3) transparent;
+}
+
+.contact-modal::-webkit-scrollbar {
+    width: 4px;
+}
+
+.contact-modal::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 2px;
+}
+
+/* ===================== */
+/* MODAL BAŞLIK          */
+/* ===================== */
+.contact-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.8rem;
+}
+
+.contact-modal-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.contact-close-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.contact-close-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+}
+
+/* ===================== */
+/* FORM                  */
+/* ===================== */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.contact-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.contact-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.contact-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.01em;
+}
+
+.required {
+    color: var(--accent-primary);
+    margin-left: 2px;
+}
+
+.contact-input {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 0.7rem 1rem;
+    color: var(--text-primary);
+    font-family: var(--font-family);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+}
+
+.contact-input::placeholder {
+    color: rgba(161, 161, 170, 0.5);
+}
+
+.contact-input:focus {
+    border-color: rgba(139, 92, 246, 0.6);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+}
+
+/* ===================== */
+/* SOSYAL MEDYA SATIRI   */
+/* ===================== */
+.social-row {
+    display: flex;
+    gap: 0.7rem;
+    align-items: center;
+}
+
+.select-wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.contact-select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 2.2rem;
+    cursor: pointer;
+    min-width: 150px;
+}
+
+.contact-select option {
+    background: #111118;
+    color: white;
+}
+
+.select-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    pointer-events: none;
+}
+
+.social-input {
+    flex: 1;
+}
+
+/* ===================== */
+/* TEXTAREA              */
+/* ===================== */
+.contact-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* ===================== */
+/* GÖNDER BUTONU         */
+/* ===================== */
+.contact-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 0.85rem;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+    color: white;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: opacity 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.35);
+    letter-spacing: 0.02em;
+}
+
+.contact-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.contact-submit.success {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+}
+
+.contact-submit.error {
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* Spinner */
+.btn-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===================== */
+/* MOBİL RESPONSIVE      */
+/* ===================== */
+@media (max-width: 480px) {
+    .contact-row {
+        grid-template-columns: 1fr;
+    }
+
+    .social-row {
+        flex-direction: column;
+    }
+
+    .contact-select {
+        width: 100%;
+    }
+
+    .contact-modal {
+        padding: 1.5rem;
+        border-radius: 20px;
+    }
+
+    .contact-fab span {
+        display: none;
+    }
+
+    .contact-fab {
+        width: 50px;
+        height: 50px;
+        padding: 0;
+        justify-content: center;
+    }
+}
