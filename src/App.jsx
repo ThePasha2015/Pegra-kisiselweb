@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { Instagram, Github, Youtube, MessageSquare, ExternalLink, Sparkles, Circle, Volume2, Volume1, VolumeX, Play, Pause, Code2, Terminal, Cpu, Globe, Zap, MousePointer2, Star, GitFork, Book } from 'lucide-react';
+import { Instagram, Github, Youtube, MessageSquare, ExternalLink, Sparkles, Circle, Volume2, Volume1, VolumeX, Play, Pause, Code2, Terminal, Cpu, Globe, Zap, MousePointer2, Star, GitFork, Book, X, Send, Mail, ChevronDown } from 'lucide-react';
 
 const DISCORD_ID = "1090629202845372477";
 const YOUTUBE_VIDEO_ID = "lE_lzhocRl4";
@@ -52,6 +53,61 @@ function App() {
     const [volume, setVolume] = useState(50);
     const [isVolumeVisible, setIsVolumeVisible] = useState(false);
     const iframeRef = useRef(null);
+
+    // İletişim Modal
+    const [isContactOpen, setIsContactOpen] = useState(false);
+    const [contactForm, setContactForm] = useState({
+        ad: '', soyad: '', kullaniciAdi: '', eposta: '',
+        sosyalPlatform: '', sosyalKullanici: '', mesaj: ''
+    });
+    const [contactStatus, setContactStatus] = useState(null); // 'sending' | 'success' | 'error'
+
+    // ── EmailJS Ayarları ────────────────────────────────────────────
+    // 1) https://www.emailjs.com adresine kaydol (ücretsiz)
+    // 2) "Email Services" → Gmail ekle → Service ID'yi buraya yaz
+    // 3) "Email Templates" → yeni şablon oluştur → Template ID'yi buraya yaz
+    // 4) "Account" → Public Key'i buraya yaz
+    const EMAILJS_SERVICE_ID = 'service_slzw4f6';   // ← Güncellendi
+    const EMAILJS_TEMPLATE_ID = 'template_c1n7lbi'; // ← Güncellendi
+    const EMAILJS_PUBLIC_KEY = '86475JWu7k1tmU9SH'; // ← Her şey tamam!
+    // ────────────────────────────────────────────────────────────────
+
+    const handleContactChange = (e) => {
+        setContactForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    };
+
+    const handleContactSubmit = async (e) => {
+        e.preventDefault();
+        setContactStatus('sending');
+        try {
+            await emailjs.send(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                {
+                    subject: `Yeni Mesaj: ${contactForm.ad} ${contactForm.soyad}`,
+                    from_name: `${contactForm.ad} ${contactForm.soyad} (${contactForm.kullaniciAdi || 'Nick Yok'})`,
+                    nickname: contactForm.kullaniciAdi || 'Belirtilmedi',
+                    email: contactForm.eposta,
+                    social_info: contactForm.sosyalPlatform
+                        ? `${contactForm.sosyalPlatform}: ${contactForm.sosyalKullanici}`
+                        : 'Belirtilmedi',
+                    message: contactForm.mesaj || '(Mesaj boş bırakıldı)',
+                    to_email: 'shadeshuresmi@gmail.com',
+                },
+                EMAILJS_PUBLIC_KEY
+            );
+            setContactStatus('success');
+            setTimeout(() => {
+                setContactStatus(null);
+                setIsContactOpen(false);
+                setContactForm({ ad: '', soyad: '', kullaniciAdi: '', eposta: '', sosyalPlatform: '', sosyalKullanici: '', mesaj: '' });
+            }, 2500);
+        } catch (err) {
+            console.error('EmailJS hatası:', err);
+            setContactStatus('error');
+            setTimeout(() => setContactStatus(null), 3000);
+        }
+    };
 
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
@@ -244,6 +300,173 @@ function App() {
 
                 <footer className="footer"><p>© {new Date().getFullYear()} Made by Pegra | Since 2015</p></footer>
             </main>
+
+            {/* İLETİŞİM BUTONU */}
+            {hasEntered && (
+                <motion.button
+                    className="contact-fab"
+                    onClick={() => setIsContactOpen(true)}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.95 }}
+                    initial={{ opacity: 0, x: 80 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5, type: 'spring' }}
+                >
+                    <Mail size={20} />
+                    <span>İletişim</span>
+                </motion.button>
+            )}
+
+            {/* İLETİŞİM MODAL */}
+            <AnimatePresence>
+                {isContactOpen && (
+                    <motion.div
+                        className="contact-overlay"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={(e) => { if (e.target === e.currentTarget) setIsContactOpen(false); }}
+                    >
+                        <motion.div
+                            className="contact-modal"
+                            initial={{ opacity: 0, scale: 0.85, y: 40 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.85, y: 40 }}
+                            transition={{ type: 'spring', damping: 20, stiffness: 200 }}
+                        >
+                            {/* Başlık */}
+                            <div className="contact-modal-header">
+                                <h2 className="contact-modal-title">İletişime Geç</h2>
+                                <button className="contact-close-btn" onClick={() => setIsContactOpen(false)}>
+                                    <X size={20} />
+                                </button>
+                            </div>
+
+                            <form className="contact-form" onSubmit={handleContactSubmit}>
+                                {/* Ad & Soyad */}
+                                <div className="contact-row">
+                                    <div className="contact-field">
+                                        <label className="contact-label">Ad <span className="required">*</span></label>
+                                        <input
+                                            className="contact-input"
+                                            type="text"
+                                            name="ad"
+                                            value={contactForm.ad}
+                                            onChange={handleContactChange}
+                                            placeholder="Adınız"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="contact-field">
+                                        <label className="contact-label">Soyad <span className="required">*</span></label>
+                                        <input
+                                            className="contact-input"
+                                            type="text"
+                                            name="soyad"
+                                            value={contactForm.soyad}
+                                            onChange={handleContactChange}
+                                            placeholder="Soyadınız"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Kullanıcı Adı */}
+                                <div className="contact-field">
+                                    <label className="contact-label">Kullanıcı Adı</label>
+                                    <input
+                                        className="contact-input"
+                                        type="text"
+                                        name="kullaniciAdi"
+                                        value={contactForm.kullaniciAdi}
+                                        onChange={handleContactChange}
+                                        placeholder="kullanici_adi"
+                                    />
+                                </div>
+
+                                {/* E-posta */}
+                                <div className="contact-field">
+                                    <label className="contact-label">E-posta <span className="required">*</span></label>
+                                    <input
+                                        className="contact-input"
+                                        type="email"
+                                        name="eposta"
+                                        value={contactForm.eposta}
+                                        onChange={handleContactChange}
+                                        placeholder="ornek@email.com"
+                                        required
+                                    />
+                                </div>
+
+                                {/* Sosyal Medya */}
+                                <div className="contact-field">
+                                    <label className="contact-label">Sosyal Medya Hesabı</label>
+                                    <div className="social-row">
+                                        <div className="select-wrapper">
+                                            <select
+                                                className="contact-input contact-select"
+                                                name="sosyalPlatform"
+                                                value={contactForm.sosyalPlatform}
+                                                onChange={handleContactChange}
+                                            >
+                                                <option value="">Platform Seçin</option>
+                                                <option value="Instagram">Instagram</option>
+                                                <option value="Twitter">Twitter</option>
+                                                <option value="LinkedIn">LinkedIn</option>
+                                                <option value="GitHub">GitHub</option>
+                                                <option value="Discord">Discord</option>
+                                                <option value="YouTube">YouTube</option>
+                                                <option value="Diğer">Diğer</option>
+                                            </select>
+                                            <ChevronDown size={16} className="select-icon" />
+                                        </div>
+                                        <input
+                                            className="contact-input social-input"
+                                            type="text"
+                                            name="sosyalKullanici"
+                                            value={contactForm.sosyalKullanici}
+                                            onChange={handleContactChange}
+                                            placeholder="Kullanıcı adınız veya profil linki"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Mesaj */}
+                                <div className="contact-field">
+                                    <label className="contact-label">Mesajınız</label>
+                                    <textarea
+                                        className="contact-input contact-textarea"
+                                        name="mesaj"
+                                        value={contactForm.mesaj}
+                                        onChange={handleContactChange}
+                                        placeholder="Mesajınızı buraya yazın..."
+                                        rows={4}
+                                    />
+                                </div>
+
+                                {/* Gönder Butonu */}
+                                <motion.button
+                                    type="submit"
+                                    className={`contact-submit ${contactStatus === 'success' ? 'success' : contactStatus === 'error' ? 'error' : ''}`}
+                                    disabled={contactStatus === 'sending'}
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.97 }}
+                                >
+                                    {contactStatus === 'sending' ? (
+                                        <><div className="btn-spinner" /> Gönderiliyor...</>
+                                    ) : contactStatus === 'success' ? (
+                                        <>✓ Gönderildi!</>
+                                    ) : contactStatus === 'error' ? (
+                                        <>✗ Hata! Tekrar dene.</>
+                                    ) : (
+                                        <><Send size={18} /> Mesajı Gönder</>
+                                    )}
+                                </motion.button>
+                            </form>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     );
 }
