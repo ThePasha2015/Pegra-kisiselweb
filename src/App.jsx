@@ -78,6 +78,14 @@ function App() {
 
     const handleContactSubmit = async (e) => {
         e.preventDefault();
+
+        // Zorunlu alanların kontrolü
+        if (!contactForm.ad || !contactForm.soyad || !contactForm.kullaniciAdi ||
+            !contactForm.eposta || !contactForm.sosyalPlatform ||
+            !contactForm.sosyalKullanici || !contactForm.mesaj) {
+            return;
+        }
+
         setContactStatus('sending');
         try {
             await emailjs.send(
@@ -373,7 +381,7 @@ function App() {
 
                                 {/* Kullanıcı Adı */}
                                 <div className="contact-field">
-                                    <label className="contact-label">Kullanıcı Adı</label>
+                                    <label className="contact-label">Kullanıcı Adı <span className="required">*</span></label>
                                     <input
                                         className="contact-input"
                                         type="text"
@@ -381,6 +389,7 @@ function App() {
                                         value={contactForm.kullaniciAdi}
                                         onChange={handleContactChange}
                                         placeholder="kullanici_adi"
+                                        required
                                     />
                                 </div>
 
