@@ -400,7 +400,7 @@ function App() {
 
                                 {/* Sosyal Medya */}
                                 <div className="contact-field">
-                                    <label className="contact-label">Sosyal Medya Hesabı</label>
+                                    <label className="contact-label">Sosyal Medya Hesabı <span className="required">*</span></label>
                                     <div className="social-row">
                                         <div className="select-wrapper">
                                             <select
@@ -408,6 +408,7 @@ function App() {
                                                 name="sosyalPlatform"
                                                 value={contactForm.sosyalPlatform}
                                                 onChange={handleContactChange}
+                                                required
                                             >
                                                 <option value="">Platform Seçin</option>
                                                 <option value="Instagram">Instagram</option>
@@ -427,13 +428,14 @@ function App() {
                                             value={contactForm.sosyalKullanici}
                                             onChange={handleContactChange}
                                             placeholder="Kullanıcı adınız veya profil linki"
+                                            required
                                         />
                                     </div>
                                 </div>
 
                                 {/* Mesaj */}
                                 <div className="contact-field">
-                                    <label className="contact-label">Mesajınız</label>
+                                    <label className="contact-label">Mesajınız <span className="required">*</span></label>
                                     <textarea
                                         className="contact-input contact-textarea"
                                         name="mesaj"
@@ -441,6 +443,7 @@ function App() {
                                         onChange={handleContactChange}
                                         placeholder="Mesajınızı buraya yazın..."
                                         rows={4}
+                                        required
                                     />
                                 </div>
 
